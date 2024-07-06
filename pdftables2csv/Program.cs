@@ -15,9 +15,9 @@ using Tabula;
 using Tabula.Detectors;
 using Tabula.Extractors;
 
-//PdfPig 0.1.6
+//PdfPig 0.1.8
 //Apache-2.0
-//PM> NuGet\Install-Package PdfPig -Version 0.1.6
+//PM> NuGet\Install-Package PdfPig -Version 0.1.8
 using UglyToad.PdfPig;
 
 namespace ConsoleApp1
@@ -102,49 +102,60 @@ namespace ConsoleApp1
                         for (int i = 1; i <= num; i++)
                         {
                             Console.WriteLine(i.ToString() + "/" + num.ToString() + "ページ目を処理中...");
-                            PageArea page = oe.Extract(i);
-
-                            IExtractionAlgorithm ea;
-                            List<Table> tables = new List<Table>();
-
-                            if (LatticeMode)
+                            try
                             {
-                                ea = new SpreadsheetExtractionAlgorithm();
-                                tables = ea.Extract(page);
-                            }
-                            else
-                            {
-                                SimpleNurminenDetectionAlgorithm detector = new SimpleNurminenDetectionAlgorithm();
-                                var regions = detector.Detect(page);
-                                ea = new BasicExtractionAlgorithm();
-                                tables = ea.Extract(page.GetArea(regions[0].BoundingBox));
-                            }
+                                PageArea page = oe.Extract(i);
 
-                            //すべての表を処理
-                            foreach (var table in tables)
-                            {
-                                //すべての行を処理
-                                foreach (var row in table.Rows)
+                                IExtractionAlgorithm ea;
+                                List<Table> tables = new List<Table>();
+
+                                if (LatticeMode)
                                 {
-                                    //すべてのセルを処理
-                                    foreach (var cell in row)
+                                    ea = new SpreadsheetExtractionAlgorithm();
+                                    tables = ea.Extract(page);
+                                }
+                                else
+                                {
+                                    SimpleNurminenDetectionAlgorithm detector = new SimpleNurminenDetectionAlgorithm();
+                                    var regions = detector.Detect(page);
+                                    if (regions.Count != 0)
                                     {
-                                        string cellValue = cell.GetText();
-                                        bool doubleQuotationMark = cellValue.Contains(",") || cellValue.Contains("\n") || cellValue.Contains("\r");
-                                        if (doubleQuotationMark)
+                                        ea = new BasicExtractionAlgorithm();
+                                        tables = ea.Extract(page.GetArea(regions[0].BoundingBox));
+                                    }
+                                }
+
+                                //すべての表を処理
+                                foreach (var table in tables)
+                                {
+                                    //すべての行を処理
+                                    foreach (var row in table.Rows)
+                                    {
+                                        //すべてのセルを処理
+                                        foreach (var cell in row)
                                         {
-                                            sb.Append("\"");
+                                            string cellValue = cell.GetText();
+                                            bool doubleQuotationMark = cellValue.Contains(",") || cellValue.Contains("\n") || cellValue.Contains("\r");
+                                            if (doubleQuotationMark)
+                                            {
+                                                sb.Append("\"");
+                                            }
+                                            sb.Append(cellValue);
+                                            if (doubleQuotationMark)
+                                            {
+                                                sb.Append("\"");
+                                            }
+                                            sb.Append(",");
                                         }
-                                        sb.Append(cellValue);
-                                        if (doubleQuotationMark)
-                                        {
-                                            sb.Append("\"");
-                                        }
-                                        sb.Append(",");
+                                        sb.Append(Environment.NewLine);
                                     }
                                     sb.Append(Environment.NewLine);
                                 }
-                                sb.Append(Environment.NewLine);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(i.ToString() + "/" + num.ToString() + "ページ目はエラーにより処理できませんでした。");
+                                Console.WriteLine(ex.Message);
                             }
                         }
 
