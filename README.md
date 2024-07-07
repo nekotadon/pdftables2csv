@@ -26,7 +26,7 @@ This software includes the following works:
 
 |Work|Documents|Remarks|
 |:----|:----|:----|
-|PdfPig 0.1.8|[LICENSE](./ThirdPartyLICENSE/PdfPig/LICENSE)<br>[NOTICE.txt](./ThirdPartyLICENSE/PdfPig/NOTICES.txt)|[NuGet](https://www.nuget.org/packages/PdfPig/0.1.8)|
+|PdfPig 0.1.6|[LICENSE](./ThirdPartyLICENSE/PdfPig/LICENSE)<br>[NOTICE.txt](./ThirdPartyLICENSE/PdfPig/NOTICES.txt)|[NuGet](https://www.nuget.org/packages/PdfPig/0.1.6)|
 |tabula-sharp 0.1.3|[LICENSE](./ThirdPartyLICENSE/tabula-sharp/LICENSE)|[NuGet](https://www.nuget.org/packages/Tabula/0.1.3)|
 |System.ValueTuple 4.5.0|[LICENSE.txt](./ThirdPartyLICENSE/System.ValueTuple/LICENSE.TXT)|[NuGet](https://www.nuget.org/packages/System.ValueTuple/4.5.0)|
 
