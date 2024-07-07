@@ -15,9 +15,9 @@ using Tabula;
 using Tabula.Detectors;
 using Tabula.Extractors;
 
-//PdfPig 0.1.8
+//PdfPig 0.1.6
 //Apache-2.0
-//PM> NuGet\Install-Package PdfPig -Version 0.1.8
+//PM> NuGet\Install-Package PdfPig -Version 0.1.6
 using UglyToad.PdfPig;
 
 namespace ConsoleApp1
